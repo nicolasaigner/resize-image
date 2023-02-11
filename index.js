@@ -5,6 +5,7 @@ const previewContainer = document.querySelector(".preview-container");
 const downloadZipButton = document.getElementById("download-zip-button");
 
 let previews = [];
+let numberOfColors = -1;
 
 changeColorButton.addEventListener("click", () => {
   const canvas = document.createElement("canvas");
@@ -28,6 +29,8 @@ changeColorButton.addEventListener("click", () => {
     previews.push(previewImage);
 
     downloadZipButton.disabled = false;
+
+    numberOfColors = numberOfColors + 1;
   };
 });
 
