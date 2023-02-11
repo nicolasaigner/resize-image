@@ -27,13 +27,31 @@
           canvas.width = image.width;
           canvas.height = image.height;
           ctx.drawImage(image, 0, 0);
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          changeColor(imageData.data);
+          ctx.putImageData(imageData, 0, 0);
         };
       });
 
       colorInput.addEventListener("change", function() {
-        ctx.fillStyle = this.value;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        changeColor(imageData.data);
+        ctx.putImageData(imageData, 0, 0);
       });
+
+      function changeColor(data) {
+        const color = colorInput.value;
+        const r = parseInt(color.substr(1, 2), 16);
+        const g = parseInt(color.substr(3, 2), 16);
+        const b = parseInt(color.substr(5, 2), 16);
+        for (let i = 0; i < data.length; i += 4) {
+          if (data[i + 3] > 0) {
+            data[i] = r;
+            data[i + 1] = g;
+            data[i + 2] = b;
+          }
+        }
+      }
     </script>
   </body>
 </html>
