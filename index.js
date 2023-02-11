@@ -1,53 +1,53 @@
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-
+const imageFileInput = document.getElementById("image-file");
+const colorPickerInput = document.getElementById("color-picker");
 const changeColorButton = document.getElementById("change-color-button");
+const previewContainer = document.querySelector(".preview-container");
+const downloadZipButton = document.getElementById("download-zip-button");
+
+let previews = [];
+
 changeColorButton.addEventListener("click", () => {
-  // Load the image into the canvas
-  ctx.drawImage(previewImage, 0, 0, canvas.width, canvas.height);
-  
-  // Get the image data from the canvas
-  let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  let data = imageData.data;
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
 
-  // Loop through each pixel and change its color
-  for (let i = 0; i < data.length; i += 4) {
-    data[i] = newRed;
-    data[i + 1] = newGreen;
-    data[i + 2] = newBlue;
-  }
+  const image = new Image();
+  image.src = URL.createObjectURL(imageFileInput.files[0]);
+  image.onload = () => {
+    canvas.width = image.width;
+    canvas.height = image.height;
 
-  // Update the canvas with the modified image data
-  ctx.putImageData(imageData, 0, 0);
+    ctx.drawImage(image, 0, 0);
+    ctx.globalCompositeOperation = "source-in";
+    ctx.fillStyle = colorPickerInput.value;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const previewImage = new Image();
+    previewImage.src = canvas.toDataURL();
+    previewImage.classList.add("preview-image");
+    previewContainer.appendChild(previewImage);
+    previews.push(previewImage);
+
+    downloadZipButton.disabled = false;
+  };
 });
 
-const downloadZipButton = document.getElementById("download-zip-button");
+let imagesArray = [];
+
 downloadZipButton.addEventListener("click", () => {
-  // Create a new canvas for each size
-  const canvas72 = document.createElement("canvas");
-  canvas72.width = 72;
-  canvas72.height = 72;
-  const ctx72 = canvas72.getContext("2d");
+  imagesArray.push(canvas.toDataURL("image/png"));
 
-  const canvas36 = document.createElement("canvas");
-  canvas36.width = 36;
-  canvas36.height = 36;
-  const ctx36 = canvas36.getContext("2d");
+  console.log('images Array', imagesArray);
+  console.log('numberOfColors', numberOfColors);
 
-  const canvas18 = document.createElement("canvas");
-  canvas18.width = 18;
-  canvas18.height = 18;
-  const ctx18 = canvas18.getContext("2d");
+  if (imagesArray.length === numberOfColors) {
+    const zip = new JSZip();
 
-  // Draw the modified image on each canvas
-  ctx72.drawImage(canvas, 0, 0, canvas72.width, canvas72.height);
-  ctx36.drawImage(canvas, 0, 0, canvas36.width, canvas36.height);
-  ctx18.drawImage(canvas, 0, 0, canvas18.width, canvas18.height);
+    imagesArray.forEach((image, index) => {
+      zip.file(`image-${index}.png`, image.replace("data:image/png;base64,", ""), { base64: true });
+    });
 
-  // Convert the canvas to a data URL
-  const dataURL72 = canvas72.toDataURL();
-  const dataURL36 = canvas36.toDataURL();
-  const dataURL18 = canvas18.toDataURL();
-
-  // ...
+    zip.generateAsync({ type: "blob" }).then((content) => {
+      saveAs(content, "images.zip");
+    });
+  }
 });
