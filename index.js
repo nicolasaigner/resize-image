@@ -39,7 +39,8 @@ let imagesArray = [];
 downloadZipButton.addEventListener("click", () => {
   imagesArray.push(canvas.toDataURL("image/png"));
 
-  console.log('images Array', imagesArray);
+  console.log('previews Array', previews);
+
   console.log('numberOfColors', numberOfColors);
 
   if (imagesArray.length === numberOfColors) {
