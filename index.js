@@ -26,7 +26,7 @@ changeColorButton.addEventListener("click", () => {
     const previewImage = new Image();
     previewImage.src = canvas.toDataURL();
     previewImage.classList.add("preview-image");
-    previewContainer.appendChild(previewImage);
+    ctx.appendChild(previewImage);
     previews.push(previewImage);
 
     downloadZipButton.disabled = false;
