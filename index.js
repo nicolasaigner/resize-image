@@ -3,6 +3,9 @@ const colorPickerInput = document.getElementById("color-picker");
 const changeColorButton = document.getElementById("change-color-button");
 const previewContainer = document.querySelector(".preview-container");
 const downloadZipButton = document.getElementById("download-zip-button");
+const JSZip = require("jszip");
+const saveAs = require("file-saver").saveAs;
+
 
 let previews = [];
 let numberOfColors = -1;
