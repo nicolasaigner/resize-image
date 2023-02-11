@@ -1,55 +1,39 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.5.0/jszip.min.js"></script>
-
     <style>
-      .container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-      }
-
-      #image-container {
-        width: 300px;
-        height: 300px;
+      .canvas {
         border: 1px solid black;
-        margin-bottom: 20px;
-      }
-
-      #image-container img {
-        width: 100%;
-        height: 100%;
-      }
-
-      #color-picker {
-        margin-bottom: 20px;
-      }
-
-      #download-button {
-        background-color: blue;
-        color: white;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <div id="image-container">
-        <img id="image" src="#">
-      </div>
-      <input type="file" id="file-input">
-      <input type="color" id="color-picker">
-      <button id="change-color-button">Mudar cor</button>
-      <a id="download-link" href="#" download>
-        <button id="download-button">Baixar imagem</button>
-      </a>
-    </div>
+    <input type="file" id="image-input">
+    <br>
+    <label for="color-input">Selecione uma cor:</label>
+    <input type="color" id="color-input">
+    <br>
+    <canvas id="canvas" class="canvas"></canvas>
+    <script>
+      const imageInput = document.getElementById("image-input");
+      const colorInput = document.getElementById("color-input");
+      const canvas = document.getElementById("canvas");
+      const ctx = canvas.getContext("2d");
 
-    <script src="index.js"></script>
+      imageInput.addEventListener("change", function() {
+        const image = new Image();
+        image.src = URL.createObjectURL(this.files[0]);
+        image.onload = function() {
+          canvas.width = image.width;
+          canvas.height = image.height;
+          ctx.drawImage(image, 0, 0);
+        };
+      });
+
+      colorInput.addEventListener("change", function() {
+        ctx.fillStyle = this.value;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      });
+    </script>
   </body>
 </html>
