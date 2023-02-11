@@ -1,65 +1,50 @@
-const fileInput = document.querySelector("#file-input");
-const colorPicker = document.querySelector("#color-picker");
-const imageContainer = document.querySelector("#image-container");
-const changeColorButton = document.querySelector("#change-color-button");
-const downloadLink = document.querySelector("#download-link");
-const temporaryImageContainer = document.querySelector("#temporary-image-container");
+const imageFileInput = document.getElementById("image-file");
+const colorPickerInput = document.getElementById("color-picker");
+const changeColorButton = document.getElementById("change-color-button");
+const previewContainer = document.querySelector(".preview-container");
+const downloadZipButton = document.getElementById("download-zip-button");
 
-let image = new Image();
-image.crossOrigin = "anonymous";
+let previews = [];
 
-fileInput.addEventListener("change", function(event) {
-  let file = event.target.files[0];
-  let reader = new FileReader();
+changeColorButton.addEventListener("click", () => {
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
 
-  reader.onload = function(event) {
-    image.src = event.target.result;
-    imageContainer.innerHTML = "";
-    imageContainer.appendChild(image);
+  const image = new Image();
+  image.src = URL.createObjectURL(imageFileInput.files[0]);
+  image.onload = () => {
+    canvas.width = image.width;
+    canvas.height = image.height;
+
+    ctx.drawImage(image, 0, 0);
+    ctx.globalCompositeOperation = "source-in";
+    ctx.fillStyle = colorPickerInput.value;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    const previewImage = new Image();
+    previewImage.src = canvas.toDataURL();
+    previewImage.classList.add("preview-image");
+    previewContainer.appendChild(previewImage);
+    previews.push(previewImage);
+
+    downloadZipButton.disabled = false;
   };
-
-  reader.readAsDataURL(file);
 });
 
-changeColorButton.addEventListener("click", function() {
-  let canvas = document.createElement("canvas");
-  let ctx = canvas.getContext("2d");
-  canvas.width = image.width;
-  canvas.height = image.height;
+let imagesArray = [];
 
-  ctx.fillStyle = colorPicker.value;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.globalCompositeOperation = "destination-atop";
-  ctx.drawImage(image, 0, 0);
+downloadZipButton.addEventListener("click", () => {
+  imagesArray.push(canvas.toDataURL("image/png"));
 
-  imageContainer.innerHTML = "";
-  imageContainer.appendChild(canvas);
-  downloadLink.href = canvas.toDataURL();
+  if (imagesArray.length === numberOfColors) {
+    const zip = new JSZip();
 
-  temporaryImageContainer.innerHTML = "";
-
-  let sizes = [72, 36, 18];
-  let images = [];
-
-  sizes.forEach(function(size) {
-    let tempCanvas = document.createElement("canvas");
-    let tempCtx = tempCanvas.getContext("2d");
-    tempCanvas.width = size;
-    tempCanvas.height = size;
-    tempCtx.drawImage(canvas, 0, 0, size, size);
-    images.push({
-      data: tempCanvas.toDataURL(),
-      name: `${size}x${size}.png`
+    imagesArray.forEach((image, index) => {
+      zip.file(`image-${index}.png`, image.replace("data:image/png;base64,", ""), { base64: true });
     });
-  });
 
-  let zip = new JSZip();
-  images.forEach(function(image) {
-    zip.file(image.name, image.data.substring(image.data.indexOf(",") + 1), { base64: true });
-  });
-
-  zip.generateAsync({ type: "blob" }).then(function(content) {
-    downloadLink.href = URL.createObjectURL(content);
-    downloadLink.download = "images.zip";
-  });
+    zip.generateAsync({ type: "blob" }).then((content) => {
+      saveAs(content, "images.zip");
+    });
+  }
 });

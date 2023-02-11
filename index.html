@@ -1,57 +1,49 @@
-<!DOCTYPE html>
 <html>
   <head>
     <style>
-      .canvas {
-        border: 1px solid black;
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 50px;
+      }
+  
+      .color-picker {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+  
+      .color-picker label {
+        margin-right: 10px;
+      }
+  
+      .preview-container {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 20px;
+      }
+  
+      .preview-image {
+        width: 72px;
+        height: 72px;
+        margin-right: 10px;
+        margin-bottom: 10px;
       }
     </style>
   </head>
   <body>
-    <input type="file" id="image-input">
-    <br>
-    <label for="color-input">Selecione uma cor:</label>
-    <input type="color" id="color-input">
-    <br>
-    <canvas id="canvas" class="canvas"></canvas>
-    <script>
-      const imageInput = document.getElementById("image-input");
-      const colorInput = document.getElementById("color-input");
-      const canvas = document.getElementById("canvas");
-      const ctx = canvas.getContext("2d");
-
-      imageInput.addEventListener("change", function() {
-        const image = new Image();
-        image.src = URL.createObjectURL(this.files[0]);
-        image.onload = function() {
-          canvas.width = image.width;
-          canvas.height = image.height;
-          ctx.drawImage(image, 0, 0);
-          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-          changeColor(imageData.data);
-          ctx.putImageData(imageData, 0, 0);
-        };
-      });
-
-      colorInput.addEventListener("change", function() {
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        changeColor(imageData.data);
-        ctx.putImageData(imageData, 0, 0);
-      });
-
-      function changeColor(data) {
-        const color = colorInput.value;
-        const r = parseInt(color.substr(1, 2), 16);
-        const g = parseInt(color.substr(3, 2), 16);
-        const b = parseInt(color.substr(5, 2), 16);
-        for (let i = 0; i < data.length; i += 4) {
-          if (data[i + 3] > 0) {
-            data[i] = r;
-            data[i + 1] = g;
-            data[i + 2] = b;
-          }
-        }
-      }
-    </script>
+    <div class="container">
+      <input type="file" id="image-file" />
+      <div class="color-picker">
+        <label>Selecione a cor:</label>
+        <input type="color" id="color-picker" />
+      </div>
+      <button id="change-color-button">Alterar cor</button>
+      <div class="preview-container">
+      </div>
+      <button id="download-zip-button" disabled>Baixar ZIP</button>
+    </div>
   </body>
+  <script src="app.js"></script>
 </html>
