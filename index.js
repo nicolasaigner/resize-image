@@ -7,7 +7,6 @@ let previews = [];
 changeColorButton.addEventListener("click", () => {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
-  ctx.drawImage(previewImage, 0, 0, canvas.width, canvas.height);
 
   const image = new Image();
   image.src = URL.createObjectURL(imageFileInput.files[0]);
