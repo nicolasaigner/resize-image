@@ -41,6 +41,8 @@ downloadZipButton.addEventListener("click", () => {
 
   console.log('previews Array', previews);
 
+  console.log('imagesArray', imagesArray);
+
   console.log('numberOfColors', numberOfColors);
 
   if (imagesArray.length === numberOfColors) {
