@@ -1,20 +1,22 @@
 const imageFileInput = document.getElementById("image-file");
 const colorPickerInput = document.getElementById("color-picker");
 const changeColorButton = document.getElementById("change-color-button");
-const previewContainer = document.querySelector(".preview-container");
 const downloadZipButton = document.getElementById("download-zip-button");
 
 let previews = [];
-
 changeColorButton.addEventListener("click", () => {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
+  ctx.drawImage(previewImage, 0, 0, canvas.width, canvas.height);
 
   const image = new Image();
   image.src = URL.createObjectURL(imageFileInput.files[0]);
   image.onload = () => {
-    canvas.width = image.width;
-    canvas.height = image.height;
+    // canvas.width = image.width;
+    // canvas.height = image.height;
+    canvas.width = 72;
+    canvas.height = 72;
+
 
     ctx.drawImage(image, 0, 0);
     ctx.globalCompositeOperation = "source-in";
