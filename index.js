@@ -28,7 +28,8 @@ changeColorButton.addEventListener("click", () => {
     sizes.push(image.width);
 
     sizes.forEach((size) => {
-      previewImage.src = canvas.toDataURL();
+      let imageResize = resizeImage(canvas, size);
+      previewImage.src = imageResize.toDataURL();
       previews.push(previewImage);
       previewImage.classList.add("preview-image");
     previewContainer.appendChild(previewImage);
@@ -80,14 +81,10 @@ function saveAsZipFile(zip) {
 
 function resizeImage(canvas, size) {
   // Create a new canvas for each size
-  const canvas72 = document.createElement("canvas");
-  canvas72.width = 72;
-  canvas72.height = 72;
-  const ctx72 = canvas72.getContext("2d");
+  const ctx72 = canvas.getContext("2d");
 
   // Draw the modified image on each canvas
   ctx72.drawImage(canvas, 0, 0, size.width, size.height);
 
-  return canvas72.toDataURL();
-
+  return canvas;
 }
