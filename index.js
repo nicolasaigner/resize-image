@@ -88,7 +88,7 @@ function resizeImage(canvasResize, size) {
   const ctx72 = canvasResize.getContext("2d");
 
   // Draw the modified image on each canvas
-  ctx72.drawImage(canvasResize, 0, 0, size.width, size.height);
+  ctx72.drawImage(canvasResize, 0, 0, size, size);
   console.log('CTX72', ctx72);
   console.log('Canvas Resized response', canvasResize);
   return canvasResize;
