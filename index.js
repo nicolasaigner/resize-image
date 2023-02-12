@@ -6,6 +6,7 @@ const downloadZipButton = document.getElementById("download-zip-button");
 
 let previews = [];
 let numberOfColors = 0;
+let sizes = [18, 36, 72];
 
 changeColorButton.addEventListener("click", () => {
   const canvas = document.createElement("canvas");
@@ -23,17 +24,20 @@ changeColorButton.addEventListener("click", () => {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     const previewImage = new Image();
-    previewImage.src = canvas.toDataURL();
-    previewImage.classList.add("preview-image");
-    previewContainer.appendChild(previewImage);
+    // previewImage.src = canvas.toDataURL();
 
-    previews.push(resizeImage(previewImage, 18));
-    previews.push(resizeImage(previewImage, 36));
-    previews.push(resizeImage(previewImage, 72));
-    
+    size.push(image.width);
+
+    sizes.forEach((size) => {
+      previewImage.src = canvas.toDataURL();
+      previews.push(previewImage);
+      previewImage.classList.add("preview-image");
+    previewContainer.appendChild(previewImage);
+    });
+
     downloadZipButton.disabled = false;
 
-    numberOfColors = numberOfColors + 3;
+    numberOfColors = numberOfColors + 1;
   };
 });
 
@@ -89,5 +93,6 @@ function resizeImage(canvas, size) {
   // Draw the modified image on each canvas
   ctx72.drawImage(canvas, 0, 0, size.width, size.height);
 
-  return ctx72;
+  return canvas72.toDataURL();
+
 }
