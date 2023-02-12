@@ -35,7 +35,7 @@ changeColorButton.addEventListener("click", () => {
       previewImage.src = imageResize.toDataURL();
       previews.push(previewImage);
       previewImage.classList.add("preview-image");
-    previewContainer.appendChild(previewImage);
+      previewContainer.appendChild(previewImage);
     });
 
     downloadZipButton.disabled = false;
@@ -89,5 +89,5 @@ function resizeImage(canvas, size) {
   // Draw the modified image on each canvas
   ctx72.drawImage(canvas, 0, 0, size.width, size.height);
 
-  return ctx72;
+  return canvas;
 }
