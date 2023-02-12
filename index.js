@@ -37,7 +37,7 @@ changeColorButton.addEventListener("click", () => {
 
     downloadZipButton.disabled = false;
 
-    numberOfColors = numberOfColors + 1;
+    numberOfColors = numberOfColors + 3;
   };
 });
 
