@@ -25,10 +25,13 @@ changeColorButton.addEventListener("click", () => {
     const previewImage = new Image();
     // previewImage.src = canvas.toDataURL();
 
-    sizes.push(image.width);
+    // sizes.push(image.width);
 
-    sizes.forEach((size) => {
+    sizes.forEach((size, i) => {
       let imageResize = resizeImage(canvas, size);
+
+      console.log(`Image ${i}`, size, imageResize);
+
       previewImage.src = imageResize.toDataURL();
       previews.push(previewImage);
       previewImage.classList.add("preview-image");
@@ -86,5 +89,5 @@ function resizeImage(canvas, size) {
   // Draw the modified image on each canvas
   ctx72.drawImage(canvas, 0, 0, size.width, size.height);
 
-  return canvas;
+  return ctx72;
 }
