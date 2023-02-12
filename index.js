@@ -37,7 +37,9 @@ changeColorButton.addEventListener("click", () => {
 let imagesArray = [];
 
 downloadZipButton.addEventListener("click", () => {
-  
+  imagesArray = previews.map((image) => {
+    return image.currentSrc;
+  });
 
   console.log('previews Array', previews);
 
