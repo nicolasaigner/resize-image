@@ -43,7 +43,12 @@ changeColorButton.addEventListener("click", () => {
 });
 
 downloadZipButton.addEventListener("click", () => {
-  imagesArray.push(canvas.toDataURL("image/png"));
+  imagesArray = previews.map((image, index) => {
+
+    console.log(`Image ${index}`, image);
+
+    return image;
+  })
 
   console.log('previews Array', previews);
 
