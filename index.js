@@ -3,9 +3,6 @@ const colorPickerInput = document.getElementById("color-picker");
 const changeColorButton = document.getElementById("change-color-button");
 const previewContainer = document.querySelector(".preview-container");
 const downloadZipButton = document.getElementById("download-zip-button");
-const JSZip = require("jszip");
-const saveAs = require("file-saver").saveAs;
-
 
 let previews = [];
 let numberOfColors = -1;
@@ -56,7 +53,23 @@ downloadZipButton.addEventListener("click", () => {
     });
 
     zip.generateAsync({ type: "blob" }).then((content) => {
-      saveAs(content, "images.zip");
+      saveAsZipFile(content, "images.zip");
     });
   }
 });
+
+function saveAsZipFile(zip) {
+  const zipFile = new Blob([zip], {type: "application/zip"});
+  const filename = "images.zip";
+  if (window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(zipFile, filename);
+  } else {
+      const link = document.createElement("a");
+      link.style.display = "none";
+      link.href = URL.createObjectURL(zipFile);
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      URL.revokeObjectURL(link.href);
+  }
+}
