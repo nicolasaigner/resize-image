@@ -26,7 +26,7 @@ changeColorButton.addEventListener("click", () => {
     const previewImage = new Image();
     // previewImage.src = canvas.toDataURL();
 
-    size.push(image.width);
+    sizes.push(image.width);
 
     sizes.forEach((size) => {
       previewImage.src = canvas.toDataURL();
