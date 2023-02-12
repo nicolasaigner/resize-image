@@ -5,7 +5,6 @@ const previewContainer = document.querySelector(".preview-container");
 const downloadZipButton = document.getElementById("download-zip-button");
 
 let previews = [];
-let numberOfColors = 0;
 let sizes = [18, 36, 72];
 
 changeColorButton.addEventListener("click", () => {
@@ -36,8 +35,6 @@ changeColorButton.addEventListener("click", () => {
     });
 
     downloadZipButton.disabled = false;
-
-    numberOfColors = numberOfColors + 3;
   };
 });
 
@@ -54,7 +51,7 @@ downloadZipButton.addEventListener("click", () => {
 
   console.log('numberOfColors', numberOfColors);
 
-  if (imagesArray.length === numberOfColors) {
+  if (imagesArray.length > 0) {
     const zip = new JSZip();
 
     imagesArray.forEach((image, index) => {
