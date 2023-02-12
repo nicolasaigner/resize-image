@@ -49,8 +49,6 @@ downloadZipButton.addEventListener("click", () => {
 
   console.log('imagesArray', imagesArray);
 
-  console.log('numberOfColors', numberOfColors);
-
   if (imagesArray.length > 0) {
     const zip = new JSZip();
 
