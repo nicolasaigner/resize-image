@@ -22,7 +22,7 @@ changeColorButton.addEventListener("click", () => {
     ctx.fillStyle = colorPickerInput.value;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    const previewImage = new Image();
+    let previewImage = new Image();
     previewImage.src = canvas.toDataURL();
     previewImage.classList.add("preview-image");
     previewContainer.appendChild(previewImage);
@@ -31,7 +31,7 @@ changeColorButton.addEventListener("click", () => {
     
     ctx.fillRect(0, 0, 72, 72);
 
-    const previewImage = new Image();
+    previewImage = new Image();
     previewImage.src = canvas.toDataURL();
     previewImage.classList.add("preview-image");
     previewContainer.appendChild(previewImage);
