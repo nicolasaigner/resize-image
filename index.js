@@ -82,12 +82,14 @@ function saveAsZipFile(zip) {
   }
 }
 
-function resizeImage(canvas, size) {
+function resizeImage(canvasResize, size) {
+  console.log('Canvas Resized Receive', canvasResize);
   // Create a new canvas for each size
-  const ctx72 = canvas.getContext("2d");
+  const ctx72 = canvasResize.getContext("2d");
 
   // Draw the modified image on each canvas
-  ctx72.drawImage(canvas, 0, 0, size.width, size.height);
-
-  return canvas;
+  ctx72.drawImage(canvasResize, 0, 0, size.width, size.height);
+  console.log('CTX72', ctx72);
+  console.log('Canvas Resized response', canvasResize);
+  return canvasResize;
 }
