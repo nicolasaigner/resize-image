@@ -80,7 +80,7 @@ function saveAsZipFile(zip) {
   }
 }
 
-function resizeImage() {
+function resizeImage(canvas) {
   // Create a new canvas for each size
   const canvas72 = document.createElement("canvas");
   canvas72.width = 72;
