@@ -5,7 +5,7 @@ const previewContainer = document.querySelector(".preview-container");
 const downloadZipButton = document.getElementById("download-zip-button");
 
 let previews = [];
-let sizes = [18, 36, 72];
+let imagesArray = [];
 
 changeColorButton.addEventListener("click", () => {
   const canvas = document.createElement("canvas");
@@ -23,36 +23,31 @@ changeColorButton.addEventListener("click", () => {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     const previewImage = new Image();
-    // previewImage.src = canvas.toDataURL();
+    previewImage.src = canvas.toDataURL();
+    previewImage.classList.add("preview-image");
+    previewContainer.appendChild(previewImage);
 
-    // sizes.push(image.width);
+    previews.push(previewImage);
+    
+    ctx.fillRect(0, 0, 72, 72);
 
-    sizes.forEach((size, i) => {
-      let imageResize = resizeImage(canvas, size);
+    const previewImage = new Image();
+    previewImage.src = canvas.toDataURL();
+    previewImage.classList.add("preview-image");
+    previewContainer.appendChild(previewImage);
 
-      console.log(`Image ${i}`, size, imageResize);
-
-      previewImage.src = imageResize.toDataURL();
-      previews.push(previewImage);
-      previewImage.classList.add("preview-image");
-      previewContainer.appendChild(previewImage);
-    });
+    previews.push(previewImage);
 
     downloadZipButton.disabled = false;
   };
 });
 
-let imagesArray = [];
-
 downloadZipButton.addEventListener("click", () => {
-  imagesArray = previews.map((image) => {
-    return image.currentSrc;
-  });
+  imagesArray.push(canvas.toDataURL("image/png"));
 
   console.log('previews Array', previews);
 
   console.log('imagesArray', imagesArray);
-
   if (imagesArray.length > 0) {
     const zip = new JSZip();
 
@@ -61,35 +56,7 @@ downloadZipButton.addEventListener("click", () => {
     });
 
     zip.generateAsync({ type: "blob" }).then((content) => {
-      saveAsZipFile(content, "images.zip");
+      saveAs(content, "images.zip");
     });
   }
 });
-
-function saveAsZipFile(zip) {
-  const zipFile = new Blob([zip], {type: "application/zip"});
-  const filename = "images.zip";
-  if (window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveOrOpenBlob(zipFile, filename);
-  } else {
-      const link = document.createElement("a");
-      link.style.display = "none";
-      link.href = URL.createObjectURL(zipFile);
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      URL.revokeObjectURL(link.href);
-  }
-}
-
-function resizeImage(canvasResize, size) {
-  console.log('Canvas Resized Receive', canvasResize);
-  // Create a new canvas for each size
-  const ctx72 = canvasResize.getContext("2d");
-
-  // Draw the modified image on each canvas
-  ctx72.drawImage(canvasResize, 0, 0, size, size);
-  console.log('CTX72', ctx72);
-  console.log('Canvas Resized response', canvasResize);
-  return canvasResize;
-}
