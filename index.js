@@ -6,6 +6,7 @@ const downloadZipButton = document.getElementById("download-zip-button");
 
 let previews = [];
 let imagesArray = [];
+let sizes = [18, 36, 72];
 
 changeColorButton.addEventListener("click", () => {
   const canvas = document.createElement("canvas");
@@ -22,21 +23,26 @@ changeColorButton.addEventListener("click", () => {
     ctx.fillStyle = colorPickerInput.value;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    let previewImage = new Image();
-    previewImage.src = canvas.toDataURL();
-    previewImage.classList.add("preview-image");
-    previewContainer.appendChild(previewImage);
+    sizes.push(canvas.width);
+
+    sizes.forEach((size) => {
+      canvas.width = size;
+      canvas.height = size;
+  
+      ctx.drawImage(image, 0, 0);
+      ctx.globalCompositeOperation = "source-in";
+      ctx.fillStyle = colorPickerInput.value;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      let previewImage = new Image();
+      previewImage.src = canvas.toDataURL();
+      previewImage.classList.add("preview-image");
+      previewContainer.appendChild(previewImage);
 
     previews.push(previewImage);
+    });
+
     
-    ctx.fillRect(0, 0, 72, 72);
-
-    previewImage = new Image();
-    previewImage.src = canvas.toDataURL();
-    previewImage.classList.add("preview-image");
-    previewContainer.appendChild(previewImage);
-
-    previews.push(previewImage);
 
     downloadZipButton.disabled = false;
   };
